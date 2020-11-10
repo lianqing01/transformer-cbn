@@ -29,6 +29,7 @@ python train.py $DATA_PATH \
   --lr 0.00015 --min-lr 1e-09 \
   --lr_cbn 0.00015 \
   --weight_decay_cbn 1. \
+  --cbn-loss-weight 0.1 \
   --label-smoothing 0.1 --weight-decay 0.0001 \
   --max-tokens 4096 --save-dir $OUTPUT_PATH \
   --update-freq 1 --no-progress-bar --log-interval 50 \
