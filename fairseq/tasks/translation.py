@@ -139,7 +139,7 @@ class TranslationTask(FairseqTask):
                             help='max number of tokens in the target sequence')
         parser.add_argument('--upsample-primary', default=1, type=int,
                             help='amount to upsample primary dataset')
-        parser.add_argument('--cbn-loss_weight', default=0.1, type=float)
+        parser.add_argument('--cbn-loss-weight', default=0.1, type=float)
         # fmt: on
 
     def __init__(self, args, src_dict, tgt_dict):
