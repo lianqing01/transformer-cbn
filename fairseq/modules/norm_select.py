@@ -8,6 +8,7 @@ from .norms.mask_batchnorm import MaskBatchNorm
 from .norms.mask_groupnorm import GroupNorm
 from .norms.mask_syncbatchnorm import MaskSyncBatchNorm
 from .norms.mask_powernorm import MaskPowerNorm
+from .norms.constraint_bn_v2 import Constraint_Norm
 
 def NormSelect(norm_type, embed_dim, head_num=None, warmup_updates=1000):
     if norm_type == "layer":
@@ -17,4 +18,6 @@ def NormSelect(norm_type, embed_dim, head_num=None, warmup_updates=1000):
         return MaskSyncBatchNorm(embed_dim)
     elif norm_type == 'power':
         return MaskPowerNorm(embed_dim, group_num=head_num, warmup_iters=warmup_updates)
-    
+    elif norm_type == 'cbn':
+        return Constraint_Norm(embed_dim)
+

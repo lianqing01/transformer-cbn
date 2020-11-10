@@ -60,7 +60,7 @@ class PowerFunction(torch.autograd.Function):
             z = x /(var + eps).sqrt()
         else:
             z = x /(running_phi + eps).sqrt()
-            
+
         y = z
         ctx.save_for_backward(z, var, weight, ema_gz)
 
@@ -86,11 +86,11 @@ class PowerFunction(torch.autograd.Function):
         g = g * 1
 
         gz = (g * z).mean(dim=3).mean(dim=2).mean(dim=0)
-        
-        approx_grad_g = (g - (1 - abkw) * ema_gz * z)
-        ema_gz.add_((approx_grad_g * z).mean(dim=3, keepdim=True).mean(dim=2, keepdim=True).mean(dim=0, keepdim=True))
 
-        gx = 1. / torch.sqrt(var + eps) * approx_grad_g 
+        approx_grad_g = (g - (1 - abkw) * ema_gz )
+        ema_gz.add_((approx_grad_g).mean(dim=3, keepdim=True).mean(dim=2, keepdim=True).mean(dim=0, keepdim=True))
+
+        gx = 1. / torch.sqrt(var + eps) * approx_grad_g
         return gx, (grad_output * y).sum(dim=3).sum(dim=2).sum(dim=0), grad_output.sum(dim=3).sum(dim=2).sum(dim=0), \
          None, None, None, None, None, None, None, None, None, None
 
@@ -164,7 +164,7 @@ class MaskPowerNorm(nn.Module):
             self.iters.copy_(self.iters + 1)
             output = PowerFunction.apply(input, self.weight, self.bias, self.running_phi, self.eps, \
                         self.afwd, self.abkw, self.ema_gz, self.debug, self.warmup_iters, self.iters, mask_input)
-            
+
         else:
             N, C, H, W = input.size()
             var = self.running_phi
@@ -179,4 +179,4 @@ class MaskPowerNorm(nn.Module):
 
         return output
 
-    
+

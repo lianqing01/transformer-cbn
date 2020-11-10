@@ -61,18 +61,18 @@ def add_norm_args(parser):
     group = parser.add_argument_group('Normalization')
     # fmt: off
     parser.add_argument('--encoder-norm-self', default='layer',
-                        choices=['layer',  'batch', 'power'],
+                        choices=['layer',  'batch', 'power', 'cbn'],
                         help='normalization scheme for encoder')
     parser.add_argument('--encoder-norm-ff', default='layer',
-                        choices=['none', 'layer', 'group', 'batch', 'power'],
+                        choices=['none', 'layer', 'group', 'batch', 'power', 'cbn'],
                         help='normalization scheme for encoder')
     parser.add_argument('--encoder-spec-norm', default=False, action='store_true')
     parser.add_argument('--decoder-norm-self', default='layer',
-                        choices=['layer', 'group', 'batch', 'power'],
+                        choices=['layer', 'group', 'batch', 'power', 'cbn'],
                         help='normalization scheme for decoder')
     parser.add_argument('--decoder-norm-ff', default='layer',
-                        choices=['none', 'layer', 'group', 'batch', 'power'])
-    
+                        choices=['none', 'layer', 'group', 'batch', 'power', 'cbn'])
+
     group.add_argument('--dropout-type', default='none',
                         choices=['none', 'bernoulli', 'gamma', 'gumbel', 'beta', 'laplace', 'chi', \
                                  'normal'],
@@ -394,6 +394,8 @@ def add_optimization_args(parser):
                        help='stop training when the learning rate reaches this minimum')
     group.add_argument('--use-bmuf', default=False, action='store_true',
                        help='specify global optimizer for syncing models on different GPUs/shards')
+    group.add_argument('--lr_cbn', default=0.1, type=eval_str_list)
+    group.add_argument('--weight_decay_cbn', default=1., type=float)
     # fmt: on
     return group
 

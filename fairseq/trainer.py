@@ -121,12 +121,23 @@ class Trainer(object):
         return self._lr_scheduler
 
     def _build_optimizer(self):
-        params = list(
-            filter(
-                lambda p: p.requires_grad,
-                chain(self.model.parameters(), self.criterion.parameters()),
+        if self.args.optimizer != 'adam_cbn':
+            params = list(
+                filter(
+                    lambda p: p.requires_grad,
+                    chain(self.model.parameters(), self.criterion.parameters()),
+                )
             )
-        )
+        else:
+            # selection
+            from fairseq.modules.norms.constraint_bn_v2 import Constraint_Lagrangian
+            constraint_param = []
+            for m in self.model.modules():
+                if isinstance(m, Constraint_Lagrangian):
+                    constraint_param.extend(list(map(id, m.parameters())))
+            params_lag = list(filter(lambda p: id(p) in constraint_param, chain(self.model.parameters())))
+            params = list(filter(lambda p: id(p) not in constraint_param and p.requires_grad,
+                                       chain(self.model.parameters(), self.criterion.parameters())))
 
         if self.args.fp16:
             if self.cuda and torch.cuda.get_device_capability(0)[0] < 7:
@@ -139,7 +150,11 @@ class Trainer(object):
         else:
             if self.cuda and torch.cuda.get_device_capability(0)[0] >= 7:
                 print('| NOTICE: your device may support faster training with --fp16')
-            self._optimizer = optim.build_optimizer(self.args, params)
+            # check cbn
+            if self.args.optimizer != 'adam_cbn':
+                self._optimizer = optim.build_optimizer(self.args, params)
+            else:
+                self._optimizer = optim.build_optimizer(self.args, params, params_lag)
 
         if self.args.use_bmuf:
             self._optimizer = optim.FairseqBMUF(self.args, self._optimizer)
