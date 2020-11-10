@@ -27,15 +27,18 @@ $ CUDA_VISIBLE_DEVICES=0 ./trans-scripts/train/train-iwslt14.sh power power laye
 $ CUDA_VISIBLE_DEVICES=0 ./trans-scripts/train/train-iwslt14.sh batch batch layer layer
 $ CUDA_VISIBLE_DEVICES=0 ./trans-scripts/train/train-iwslt14.sh layer layer layer layer
 
+```
+```
 For CBN (I only can train the CBN with only used it in the self-attentaion encoder part and other for layer norm.
 Other way leads to the model collapse even I tune the gradient clip.):
 $ CUDA_VISIBLE_DEVICES=0 ./trans-scripts/train/train-iwslt14_cbn.sh cbn layer layer layer
+
 For tuning the hyper-parameter in cbn, you can check the script: trans-scripts/train/train-iwslt14_cbn.sh
-lr: 0.00015
-lr-cbn: 0.00015
-weight-decay_cbn: 1.
-cbn-loss-weight: 0.1
-gradient-clip: 0.1
+  lr: 0.00015
+  lr-cbn: 0.00015
+  weight-decay_cbn: 1.
+  cbn-loss-weight: 0.1
+  gradient-clip: 0.1
 ```
 
 
