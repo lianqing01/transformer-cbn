@@ -20,7 +20,7 @@ mkdir -p $OUTPUT_PATH
 python train.py $DATA_PATH \
   --seed 1 \
   --arch $ARCH --share-all-embeddings \
-  --task translation_cbn \
+  --task translation \
   --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0.0 \
   --encoder-norm-self $ENC_NORM --decoder-norm-self $DEC_NORM \
   --encoder-norm-ff $ENC_NORM_ff --decoder-norm-ff $DEC_NORM_ff \
