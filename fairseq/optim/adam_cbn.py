@@ -105,8 +105,6 @@ class Adam(torch.optim.Optimizer):
                  weight_decay=0, amsgrad=False, lr_cbn=1e-4, weight_decay_cbn=1e-1):
         defaults = dict(lr=lr, betas=betas, eps=eps,
                         weight_decay=weight_decay, amsgrad=amsgrad)
-        import pdb
-        pdb.set_trace()
 
         super(Adam, self).__init__([{'params': params},
                                     {'params': params_lag, 'lr':lr_cbn,

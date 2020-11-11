@@ -178,6 +178,7 @@ fairseq/optim/adadelta.py
 fairseq/optim/adafactor.py
 fairseq/optim/adagrad.py
 fairseq/optim/adam.py
+fairseq/optim/adam_cbn.py
 fairseq/optim/adamax.py
 fairseq/optim/bmuf.py
 fairseq/optim/fairseq_optimizer.py
@@ -206,6 +207,7 @@ fairseq/tasks/semisupervised_translation.py
 fairseq/tasks/sentence_prediction.py
 fairseq/tasks/sentence_ranking.py
 fairseq/tasks/translation.py
+fairseq/tasks/translation_cbn.py
 fairseq/tasks/translation_from_pretrained_xlm.py
 fairseq/tasks/translation_lev.py
 fairseq/tasks/translation_moe.py
